@@ -56,7 +56,7 @@ class TradeApi {
     });
   }
 
-  static getTempTrades() {return trades};
+  static getTempTrades() {return trades;}
 
   static saveTrade(trade) {
 	trade = Object.assign({}, trade); // to avoid manipulating object passed in.

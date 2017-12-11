@@ -1,4 +1,4 @@
-import TradeApi from '../api/tradeApi';
+import TradeApi from '../api/mockTradeAPI';
 import * as types from './actionTypes';
 
 export function createTradesAction(course) {
@@ -26,7 +26,7 @@ export function loadTrades() {
 export function saveTrade(trade) {
   return function (dispatch, getState) {
     return TradeApi.saveTrade(trade).then(savedTrade => {
-      course.id ? dispatch(updateTradesAction(savedTrade)) :
+      trade.id ? dispatch(updateTradesAction(savedTrade)) :
         dispatch(createTradesAction(savedTrade));
     }).catch(error => {
       throw(error);

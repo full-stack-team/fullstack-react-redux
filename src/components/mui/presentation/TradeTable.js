@@ -1,13 +1,13 @@
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
 import React, {Component} from 'react';
-import TradeAPI from '../../../api/tradeAPI';
+import TradeAPI from '../../../api/mockTradeAPI';
 
 //import ReactBsTable  from 'react-bootstrap-table';
 //var BootstrapTable = ReactBsTable.BootstrapTable;
 //var TableHeaderColumn = ReactBsTable.TableHeaderColumn;
-var tempProducts = TradeAPI.getTempTrades();
+let tempProducts = TradeAPI.getTempTrades();
 
-var products = [{
+let products = [{
       id: 1,
       name: "Product1",
       price: 120
@@ -32,14 +32,14 @@ var products = [{
 
     render() {
       return (
-        <BootstrapTable data={tempProducts} deleteRow={ true } insertRow={ true }  selectRow={ selectRowProp } striped hover>
-            <TableHeaderColumn isKey dataField='id'>Trade ID</TableHeaderColumn>
-            <TableHeaderColumn dataField='commodity'>Commodity</TableHeaderColumn>
-            <TableHeaderColumn dataField='side'>Side</TableHeaderColumn>
-            <TableHeaderColumn dataField='qty'>Quantity in gms</TableHeaderColumn>
-            <TableHeaderColumn dataField='price'>Price</TableHeaderColumn>
-            <TableHeaderColumn dataField='counterparty'>Counter Party</TableHeaderColumn>
-            <TableHeaderColumn dataField='location'>Location</TableHeaderColumn>
+        <BootstrapTable data={tempProducts} deleteRow insertRow selectRow={selectRowProp} striped hover>
+            <TableHeaderColumn isKey dataField="id">Trade ID</TableHeaderColumn>
+            <TableHeaderColumn dataField="commodity">Commodity</TableHeaderColumn>
+            <TableHeaderColumn dataField="side">Side</TableHeaderColumn>
+            <TableHeaderColumn dataField="qty">Quantity in gms</TableHeaderColumn>
+            <TableHeaderColumn dataField="price">Price</TableHeaderColumn>
+            <TableHeaderColumn dataField="counterparty">Counter Party</TableHeaderColumn>
+            <TableHeaderColumn dataField="location">Location</TableHeaderColumn>
         </BootstrapTable>
       );
     }

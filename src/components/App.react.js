@@ -6,11 +6,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TraderCard from '../components/mui/presentation/TradeCard';
 import '../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
-const MuiApp = () => (
+/*const MuiApp = () => (
   <MuiThemeProvider>
     <TraderCard />
   </MuiThemeProvider>
-);
+);*/
 
 /*ReactDOM.render(
   <App />,
@@ -21,9 +21,9 @@ class App extends React.Component {
   render() {
     return (
       <div className="container-fluid">
-        <Header/>
-        <MuiApp />
-        {this.props.children}
+        {/* <Header/> */}
+        {/* <MuiApp /> */}
+        {/* {this.props.children} */}
       </div>
     );
   }

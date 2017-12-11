@@ -1,4 +1,4 @@
-import CommodityApi from '../api/commodityApi';
+const CommodityApi =require('../api/mockCommodityApi');
 import * as types from './actionTypes';
 
 export function loadCommodityAction(commodities) {

@@ -1,4 +1,4 @@
-import CounterpartyApi from '../api/counterpartyApi';
+const CounterpartyApi = require('../api/mockCounterpartyApi');
 import * as types from './actionTypes';
 
 export function loadCounterpartiesAction(counterparties) {

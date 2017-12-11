@@ -1,7 +1,7 @@
 import React from 'react';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import TradeCardTable from './TradeCardTable';
-import DataTableSample from './DataTableSample';
+// import DataTableSample from './DataTableSample';
 
 const styles = {
   headline: {
