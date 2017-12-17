@@ -1,6 +1,6 @@
 import React from 'react';
 import {Tabs, Tab} from 'material-ui/Tabs';
-import TradeCardTable from './TradeCardTable';
+import TradePaper from './TradePaper';
 // import DataTableSample from './DataTableSample';
 
 const styles = {
@@ -12,19 +12,19 @@ const styles = {
   }
 };
 
-function handleActive(tabEvent) {
+/*function handleActive(tabEvent) {
   alert(`TRADES Selected ${tabEvent.props['data-route']} Selected. 
           Tab Label : ${tabEvent.props['data-label']}`);
-}
+}*/
 
-const TradeCard = () => (
+const TradeTab = () => (
 <Tabs>
 <Tab label="TRADES" 
   data-route="/home"
   data-label="TRADES"
-  onActive={handleActive}
+  // onActive={handleActive}
 >
-  <TradeCardTable />
+  <TradePaper />
 </Tab>
 <Tab label="TRANSFERS" >
   <div>
@@ -45,4 +45,4 @@ const TradeCard = () => (
 
 );
 
-export default TradeCard;
+export default TradeTab;

@@ -1,16 +1,29 @@
 // This component handles the App template used on every page.
 import React, {PropTypes} from 'react';
-import Header from '../components/common/Header.react';
 // import ReactDOM from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import TraderCard from '../components/mui/presentation/TradeCard';
 import '../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
+import Header from '../components/common/Header.react';
+const TradePage = require( '../components/trade/TradePage');
+// import RaisedButton from 'material-ui/RaisedButton';
 
-/*const MuiApp = () => (
+// export const TradePageNew  = () => {
+// 	return (
+//       <div>
+//         <h1>Trade</h1>
+//         <p>Trade Grid comes here</p>
+//         <RaisedButton label="New" />
+//       </div>
+//     );
+//   }
+
+
+const MuiApp = () => (
   <MuiThemeProvider>
-    <TraderCard />
+    <Header/>
+    {/* <TradePage /> */}
   </MuiThemeProvider>
-);*/
+);
 
 /*ReactDOM.render(
   <App />,
@@ -21,9 +34,8 @@ class App extends React.Component {
   render() {
     return (
       <div className="container-fluid">
-        {/* <Header/> */}
-        {/* <MuiApp /> */}
-        {/* {this.props.children} */}
+        <MuiApp />
+        {this.props.children}
       </div>
     );
   }

@@ -26,7 +26,7 @@ const editPaperstyle = {
   display: 'inline-block'
 };
 
-const TradeCardTable = () => (
+const TradePaper = () => (
   <div>
     <Paper style={serachPaperstyle} zDepth={2} />
     <Paper style={tablePaperstyle} zDepth={2}>
@@ -36,4 +36,4 @@ const TradeCardTable = () => (
   </div>
 );
 
-export default TradeCardTable;
+export default TradePaper;

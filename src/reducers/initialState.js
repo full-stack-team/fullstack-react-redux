@@ -1,8 +1,8 @@
 export default {
-  trades: [],
-  commodities: [],
-  counterparties: [],
-  locations: [],
+  // trades: [],
+  // commodities: [],
+  // counterparties: [],
+  // locations: [],
   authors: [],
   courses: []
 };
