@@ -4,7 +4,7 @@ import TradeTable from './TradeTable';
 
 const serachPaperstyle = {
   height: 100,
-  width: 810,
+  width: 1160,
   margin: 5,
   textAlign: 'center',
   display: 'inline-block'
@@ -12,7 +12,7 @@ const serachPaperstyle = {
 
 const tablePaperstyle = {
   height: 400,
-  width: 810,/*470 */
+  width: 1160,/*470 */
   margin: 5,
   textAlign: 'center',
   display: 'inline-block'
