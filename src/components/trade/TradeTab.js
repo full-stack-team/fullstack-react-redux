@@ -1,7 +1,6 @@
 import React from 'react';
 import {Tabs, Tab} from 'material-ui/Tabs';
 import TradePaper from './TradePaper';
-// import DataTableSample from './DataTableSample';
 
 const styles = {
   headline: {
@@ -11,11 +10,6 @@ const styles = {
     fontWeight: 400
   }
 };
-
-/*function handleActive(tabEvent) {
-  alert(`TRADES Selected ${tabEvent.props['data-route']} Selected. 
-          Tab Label : ${tabEvent.props['data-label']}`);
-}*/
 
 const TradeTab = () => (
 <Tabs>
@@ -28,7 +22,6 @@ const TradeTab = () => (
 </Tab>
 <Tab label="TRANSFERS" disabled='true' >
   <div>
-    {/* <DataTableSample /> */}
   </div>
 </Tab>
 <Tab

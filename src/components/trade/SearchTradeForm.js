@@ -3,19 +3,8 @@ import TextField from "material-ui/TextField";
 import RaisedButton from "material-ui/RaisedButton";
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-//import {sidesData, locationsData, counterpartiesData, commoditiesData, commodities} from './DropDownItems'
 import {sides, locations, counterparties, commodities} from './DropdownItems'
 import DatePicker from 'material-ui/DatePicker';
-//import {fullWhite} from 'material-ui/styles/colors';
-
-//var sides = sidesData().map(side => {return <MenuItem value={side} key={side} primaryText={`${side}`} />});
-//var locations = locationsData().map(side => {return <MenuItem value={side} key={side} primaryText={`${side}`} />});
-//var counterparties = counterpartiesData().map(side => {return <MenuItem value={side} key={side} primaryText={`${side}`} />});
-//var commodities = commoditiesData().map(commodity => {return <MenuItem value={commodity} key={commodity} primaryText={`${commodity}`} />});
-
-/*CreateTradeForm.propTypes = {
-  courses: PropTypes.array.isRequired
-};*/
 
 const isDate = (data) => {
   return Object.prototype.toString.call(data) === '[object Date]'?true:false

@@ -3,19 +3,8 @@ import TextField from "material-ui/TextField";
 import RaisedButton from "material-ui/RaisedButton";
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-//import {sidesData, locationsData, counterpartiesData, commoditiesData, commodities} from './DropDownItems'
 import {sides, locations, counterparties, commodities} from './DropdownItems'
 import DatePicker from 'material-ui/DatePicker';
-
-//var sides = sidesData().map(side => {return <MenuItem value={side} key={side} primaryText={`${side}`} />});
-//var locations = locationsData().map(side => {return <MenuItem value={side} key={side} primaryText={`${side}`} />});
-//var counterparties = counterpartiesData().map(side => {return <MenuItem value={side} key={side} primaryText={`${side}`} />});
-//var commodities = commoditiesData().map(commodity => {return <MenuItem value={commodity} key={commodity} primaryText={`${commodity}`} />});
-
-/*CreateTradeForm.propTypes = {
-  courses: PropTypes.array.isRequired
-};*/
-
 const selectMenuItemStyle = (fieldname) => {
   return ['side', 'commodity', 'location'].includes(fieldname)?{fontSize:13, width:160, textAlign: 'left'}:
     ['counterparty'].includes(fieldname)?{fontSize:13, width:160, textAlign: 'left'}:
@@ -59,15 +48,11 @@ export default class CreateTradeForm extends React.Component {
   };
 
   handleDateChange = (event, changeDate) => {
-    //var dateValue = new Date(changeDate);
-    //var newValue = `${dateValue.getFullYear()}-${dateValue.getMonth()}-${dateValue.getDate()}`;
     this.setState({
-      //tradeDate: newValue,
       tradeDate: changeDate,
     });
   };
   change= e => {
-    // this.props.onChange({ [e.target.name]: e.target.value });
     this.setState({
       [e.target.name]: e.target.value
     });
@@ -110,12 +95,6 @@ export default class CreateTradeForm extends React.Component {
       isError = true;
       errors.locationError = "Please select valid location";
     }
-
-    /*if (this.state.tradeDate.indexOf("-") === -1) {
-      isError = true;
-      errors.tradeDateError = "Please enter valid date";
-    }*/
-
     this.setState({
       ...this.state,
       ...errors
@@ -129,7 +108,6 @@ export default class CreateTradeForm extends React.Component {
     const err = this.validate();
     if (!err) {
       this.props.onSubmit(this.state);
-      // clear form
       this.setState({
         tradeDate: new Date(),
         tradeDateError: "",
@@ -160,15 +138,6 @@ export default class CreateTradeForm extends React.Component {
           value={this.state.tradeDate}
           textFieldStyle={{fontSize:13, width:160}}
         />
-        {/* <TextField
-          name="tradeDate"
-          hintText="Trade Date"
-          // floatingLabelText="Trade Date"
-          value={this.state.tradeDate}
-          onChange={e => this.change(e)}
-          errorText={this.state.tradeDateError}
-          floatingLabelFixed
-        /> */}
         <br />
         <SelectField
           name="commodity"
@@ -199,7 +168,6 @@ export default class CreateTradeForm extends React.Component {
         <TextField
           name="quantity"
           hintText="Quantity"
-          // floatingLabelText="Quantity"
           value={this.state.quantity}
           onChange={e => this.change(e)}
           errorText={this.state.quantityError}

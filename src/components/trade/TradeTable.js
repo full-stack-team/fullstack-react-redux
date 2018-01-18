@@ -6,15 +6,8 @@ import TrashIcon from "material-ui/svg-icons/action/delete";
 import CheckIcon from "material-ui/svg-icons/navigation/check";
 import TextField from "material-ui/TextField";
 import SelectField from 'material-ui/SelectField';
-// import MenuItem from 'material-ui/MenuItem';
-// import {sidesData, locationsData, counterpartiesData, commoditiesData} from './DropDownItems'
 import {sides, locations, counterparties, commodities} from './DropDownItems'
 import DatePicker from 'material-ui/DatePicker';
-
-// var sides = sidesData().map(side => {return <MenuItem value={side} key={side} primaryText={`${side}`} />});
-// var locations = locationsData().map(side => {return <MenuItem value={side} key={side} primaryText={`${side}`} />});
-// var counterparties = counterpartiesData().map(side => {return <MenuItem value={side} key={side} primaryText={`${side}`} />});
-// var commodities = commoditiesData().map(commodity => {return <MenuItem value={commodity} key={commodity} primaryText={`${commodity}`} />});
 
 Date.prototype.yyyymmdd = function() {
   var mm = this.getMonth() + 1; // getMonth() is zero-based
@@ -42,9 +35,6 @@ const selectMenuItemStyle = (fieldname) => {
     ['counterparty'].includes(fieldname)?{fontSize:13, width:155}:{fontSize:13, width:100}
 }
 
-//(event, index, counterparty)
-//handleDDChange = (event, index, value, name, i)
-
 const rowCell = (x, y, i, handleChange, handleDateChange, handleDDChange) =>{
   return (
     y.prop=='tradeDate'?
@@ -56,14 +46,12 @@ const rowCell = (x, y, i, handleChange, handleDateChange, handleDDChange) =>{
         textFieldStyle={{fontSize:13}}
       />
     :['side', 'counterparty', 'location', 'commodity'].includes(y.prop)?
-    //(y.prop=='side' || y.prop=='counterparty' || y.prop== 'location')?  
       <SelectField
         name={y.prop}
         value={convertObjectToCellValue(x[y.prop])}
         onChange={(event, index, value) => handleDDChange(event, index, value, y.prop, i)}
         maxHeight={200}
         menuItemStyle={selectMenuItemStyle(y.prop)}
-        //menuStyle={{width:70}}
         style={selectMenuItemStyle(y.prop)}        
       >
       {y.prop=='side'? sides :y.prop=='counterparty'?counterparties:y.prop=='commodity'?commodities: locations}
@@ -92,7 +80,6 @@ const row = (
   handleDateChange,
   handleDDChange
 ) => {
-  //console.log(x['tradeDate'].yyyymmdd())
   const currentlyEditing = editIdx === i;
   return (
     <TableRow key={`tr-${i}`} selectable={false}>
@@ -101,15 +88,8 @@ const row = (
         
           {currentlyEditing ? (
             rowCell(x,y,i, handleChange, handleDateChange, handleDDChange)
-            // <TextField
-            //   name={y.prop}
-            //   onChange={e => handleChange(e, y.prop, i)}
-            //   value={convertObjectToCellValue(x[y.prop])}
-            // />
           ) 
           : (
-            //'xyz'
-            //Object.prototype.toString.call(x[y.prop]) === '[object Date]'?x[y.prop].toDateString():x[y.prop]
             convertObjectToCellValue(x[y.prop])
           )}
         </TableRowColumn>
