@@ -1,0 +1,15 @@
+.TradePaperApp {
+  text-align: center;
+}
+  
+.TradePaperApp-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+  
+.TradePaperApp-intro {
+  font-size: large;
+}
+  

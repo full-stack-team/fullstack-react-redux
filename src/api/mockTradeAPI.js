@@ -6,6 +6,7 @@ import delay from './delay';
 const trades = [
   {
     id: '1',
+    tradeData:'2017-12-01',
     commodity: 'Silver',
     side: 'Buy',
     qty: '8',
@@ -15,6 +16,7 @@ const trades = [
   },
   {
     id: '2',
+    tradeData:'2017-12-01',
     commodity: 'Silver',
     side: 'Buy',
     qty: '10',
@@ -24,6 +26,7 @@ const trades = [
   },
   {
     id: '3',
+    tradeData:'2017-12-01',
     commodity: 'Gold',
     side: 'Buy',
     qty: '8',
@@ -33,6 +36,7 @@ const trades = [
   },  
   {
     id: '4',
+    tradeData:'2017-12-01',
     commodity: 'Gold',
     side: 'Buy',
     qty: '16',

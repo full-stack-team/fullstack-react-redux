@@ -26,13 +26,13 @@ const TradeTab = () => (
 >
   <TradePaper />
 </Tab>
-<Tab label="TRANSFERS" >
+<Tab label="TRANSFERS" disabled='true' >
   <div>
     {/* <DataTableSample /> */}
   </div>
 </Tab>
 <Tab
-  label="TRANSPORTS"
+  label="TRANSPORTS" disabled='true'
 >
   <div>
     <h2 style={styles.headline}>Tab Three</h2>
