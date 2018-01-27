@@ -1,60 +1,76 @@
 import delay from './delay';
 
+/*Date.prototype.yyyymmdd = function() {
+  var mm = this.getMonth() + 1; // getMonth() is zero-based
+  var dd = this.getDate();
+
+  return [this.getFullYear(),
+          (mm>9 ? '' : '0') + mm,
+          (dd>9 ? '' : '0') + dd
+         ].join('-');
+};*/
+
 // This file mocks a web API by working with the hard-coded data below.
 // It uses setTimeout to simulate the delay of an AJAX call.
 // All calls return promises.
 const trades = [
   {
-    id: '1',
-    tradeData:'2017-12-01',
-    commodity: 'Silver',
+    id: 1,
+    tradeDate:new Date('2017-12-01'),
+    commodity: 'SLR',
     side: 'Buy',
-    qty: '8',
+    quantity: 8,
     price: '100',
-    counterparty: 'NMC',
+    counterparty: 'ABC',
     location: 'LON'
   },
   {
-    id: '2',
-    tradeData:'2017-12-01',
-    commodity: 'Silver',
+    id: 2,
+    tradeDate:new Date('2017-12-31'),
+    commodity: 'SLR',
     side: 'Buy',
-    qty: '10',
+    quantity: 10,
     price: '200',
-    counterparty: 'NMC',
+    counterparty: 'XYZ',
     location: 'LON'
   },
   {
-    id: '3',
-    tradeData:'2017-12-01',
-    commodity: 'Gold',
+    id: 3,
+    tradeDate:new Date('2017-12-05'),
+    commodity: 'GLD',
     side: 'Buy',
-    qty: '8',
+    quantity: 8,
     price: '1000',
-    counterparty: 'SMC',
+    counterparty: 'ABC',
     location: 'NYC'
   },  
   {
-    id: '4',
-    tradeData:'2017-12-01',
-    commodity: 'Gold',
+    id: 4,
+    tradeDate:new Date('2017-12-15'),
+    commodity: 'GLD',
     side: 'Buy',
-    qty: '16',
+    quantity: 16,
     price: '2000',
-    counterparty: 'SMC',
+    counterparty: 'XYZ',
     location: 'NYC'
   }
 ];
 
 //This would be performed on the server in a real app. Just stubbing in.
-const generateId = (trades) => {
-  Math.max.apply(Math,trades.map(function(trade){return trade.id +1;}));//return trades.id
+const generateId = () => {
+  //console.log(Math.max.apply(Math,trades.map(function(trade){return trade.id +1;})))
+  return Math.max.apply(Math,trades.map(function(trade){return trade.id +1;}));//return trades.id
 };
 
 class TradeApi {
   static getAllTrades() {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
+        /*trades.forEach(function(trade) {
+          console.log('before:'+trade.tradeDate);
+          trade['tradeDate']=trade['tradeDate'].yyyymmdd();
+          console.log('later:'+trade.tradeDate);
+        });*/
         resolve(Object.assign([], trades));
       }, delay);
     });
@@ -63,7 +79,8 @@ class TradeApi {
   static getTempTrades() {return trades;}
 
   static saveTrade(trade) {
-	trade = Object.assign({}, trade); // to avoid manipulating object passed in.
+    //console.log(trade);
+	  trade = Object.assign({}, trade); // to avoid manipulating object passed in.
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         // Simulate server-side validation
@@ -79,22 +96,27 @@ class TradeApi {
           //Just simulating creation here.
           //The server would generate ids for new trades in a real app.
           //Cloning so copy returned is passed by value rather than by reference.
-          trade.id = generateId(trade);
+          trade.id = generateId();
+          //console.log(trade.id)
           trades.push(trade);
         }
-
-        resolve(trade);
+        return trade;
+        //resolve(trade);
       }, delay);
     });
   }
 
-  static deleteTrade(tradeId) {
+  static deleteTrade(tradeToDelete) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
+        //console.log(trades)
         const indexOfTradeToDelete = trades.findIndex(trade => {
-          trade.tradeId == tradeId;
+          //console.log(JSON.stringify(trade.id == tradeToDelete.id))
+          return trade.id == tradeToDelete.id;
         });
+        //console.log(indexOfTradeToDelete)
         trades.splice(indexOfTradeToDelete, 1);
+        //console.log('trades after delete:'+JSON.stringify(trades))
         resolve();
       }, delay);
     });

@@ -1,16 +1,23 @@
-import React from "react";
+import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as tradeRefActions from '../../actions/tradeRefActions';
+
 import TextField from "material-ui/TextField";
 import RaisedButton from "material-ui/RaisedButton";
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import {sides, locations, counterparties, commodities} from './DropdownItems'
 import DatePicker from 'material-ui/DatePicker';
-const selectMenuItemStyle = (fieldname) => {
+
+import {sides, locations, counterparties, commodities
+  , commoditiesDD, counterpartiesDD, locationsDD, sidesDD} from './DropdownItems'
+
+  const selectMenuItemStyle = (fieldname) => {
   return ['side', 'commodity', 'location'].includes(fieldname)?{fontSize:13, width:160, textAlign: 'left'}:
     ['counterparty'].includes(fieldname)?{fontSize:13, width:160, textAlign: 'left'}:
     {fontSize:13, width:160, textAlign: 'left'}
 }
-export default class CreateTradeForm extends React.Component {
+class CreateTradeForm extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -57,6 +64,8 @@ export default class CreateTradeForm extends React.Component {
       [e.target.name]: e.target.value
     });
   };
+
+  //commoditiesMenuItem = ()=> {return commoditiesDD(state.commodities)};
 
   validate =() => {
     let isError = false;
@@ -149,7 +158,7 @@ export default class CreateTradeForm extends React.Component {
           style={selectMenuItemStyle("commodity")}
           menuItemStyle={selectMenuItemStyle("commodity")}
         >
-          {commodities}
+        {commoditiesDD(this.props.commodities)}
         </SelectField>
         <br />
         <SelectField
@@ -162,7 +171,7 @@ export default class CreateTradeForm extends React.Component {
           style={selectMenuItemStyle("side")}
           menuItemStyle={selectMenuItemStyle("side")}
         >
-          {sides}
+          {sidesDD(this.props.sides)}
         </SelectField>
         <br />
         <TextField
@@ -197,7 +206,7 @@ export default class CreateTradeForm extends React.Component {
           style={selectMenuItemStyle("counterparty")}
           menuItemStyle={selectMenuItemStyle("counterparty")}
         >
-          {counterparties}
+          {counterpartiesDD(this.props.counterparties)}
         </SelectField>
         <SelectField
           name="location"
@@ -209,7 +218,7 @@ export default class CreateTradeForm extends React.Component {
           style={selectMenuItemStyle("location")}
           menuItemStyle={selectMenuItemStyle("location")}
         >
-          {locations}
+          {locationsDD(this.props.locations)}
         </SelectField>
         <br />
         <RaisedButton label="Submit" onClick={e => this.onSubmit(e)} backgroundColor="#a4c639" />
@@ -217,3 +226,28 @@ export default class CreateTradeForm extends React.Component {
     );
   }
 }
+
+CreateTradeForm.propTypes = {
+  commodities: PropTypes.array.isRequired,
+  counterparties: PropTypes.array.isRequired,
+  locations: PropTypes.array.isRequired,
+  sides: PropTypes.array.isRequired
+};
+
+function mapStateToProps(state, ownProps) {
+  //console.log(state)
+  return {
+    commodities: state.commodities,
+    counterparties: state.counterparties,
+    locations: state.locations,
+    sides: state.sides
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(tradeRefActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateTradeForm);

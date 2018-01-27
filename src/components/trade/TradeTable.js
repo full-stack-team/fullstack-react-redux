@@ -1,15 +1,19 @@
-import React from "react";
+import React, {PropTypes} from 'react';
 import {Table,TableBody,TableHeader,TableHeaderColumn,TableRow,
         TableRowColumn} from "material-ui/Table";
+
+ import {sides, locations, counterparties, commodities
+        , commoditiesDD, counterpartiesDD, locationsDD, sidesDD} from './DropdownItems'
 import EditIcon from "material-ui/svg-icons/image/edit";
 import TrashIcon from "material-ui/svg-icons/action/delete";
 import CheckIcon from "material-ui/svg-icons/navigation/check";
 import TextField from "material-ui/TextField";
 import SelectField from 'material-ui/SelectField';
-import {sides, locations, counterparties, commodities} from './DropDownItems'
 import DatePicker from 'material-ui/DatePicker';
 
-Date.prototype.yyyymmdd = function() {
+  const tableCheckStyle= {checkVisibility : false}
+  
+  Date.prototype.yyyymmdd = function() {
   var mm = this.getMonth() + 1; // getMonth() is zero-based
   var dd = this.getDate();
 
@@ -18,24 +22,23 @@ Date.prototype.yyyymmdd = function() {
           (dd>9 ? '' : '0') + dd
          ].join('-');
 };
-
 const convertObjectToCellValue = (cellValue) => {
   return Object.prototype.toString.call(cellValue) === '[object Date]'?cellValue.yyyymmdd():cellValue
 }
-
 const fieldTypeWidth = (fieldname) => {
   return fieldname=='tradeDate'?115:
     ['side', 'commodity', 'location'].includes(fieldname)?80:
     ['counterparty'].includes(fieldname)?180:
     ['quantity', 'price'].includes(fieldname)?150:10
 }
-
 const selectMenuItemStyle = (fieldname) => {
   return ['side', 'commodity', 'location'].includes(fieldname)?{fontSize:13, width:90}:
     ['counterparty'].includes(fieldname)?{fontSize:13, width:155}:{fontSize:13, width:100}
 }
 
-const rowCell = (x, y, i, handleChange, handleDateChange, handleDDChange) =>{
+
+const rowCell = (x, y, i, handleChange, handleDateChange, handleDDChange
+  , DDItems) =>{
   return (
     y.prop=='tradeDate'?
       <DatePicker
@@ -54,7 +57,10 @@ const rowCell = (x, y, i, handleChange, handleDateChange, handleDDChange) =>{
         menuItemStyle={selectMenuItemStyle(y.prop)}
         style={selectMenuItemStyle(y.prop)}        
       >
-      {y.prop=='side'? sides :y.prop=='counterparty'?counterparties:y.prop=='commodity'?commodities: locations}
+      {y.prop=='side'? sidesDD(DDItems.sides) 
+      :y.prop=='counterparty'?counterpartiesDD(DDItems.counterparties)
+      :y.prop=='commodity'?commoditiesDD(DDItems.commodities): locationsDD(DDItems.locations)
+      }
       </SelectField>
     : //y.prop.includes('quantity', 'commodity', 'price')
       <TextField
@@ -78,16 +84,16 @@ const row = (
   handleChange,
   stopEditing,
   handleDateChange,
-  handleDDChange
+  handleDDChange,
+  DDItems
 ) => {
   const currentlyEditing = editIdx === i;
   return (
     <TableRow key={`tr-${i}`} selectable={false}>
       {header.map((y, k) => (
         <TableRowColumn key={`trc-${k}`} style={{width:fieldTypeWidth(y.prop)}}>
-        
           {currentlyEditing ? (
-            rowCell(x,y,i, handleChange, handleDateChange, handleDDChange)
+            rowCell(x,y,i, handleChange, handleDateChange, handleDDChange, DDItems)
           ) 
           : (
             convertObjectToCellValue(x[y.prop])
@@ -108,8 +114,7 @@ const row = (
   );
 };
 
-const tableCheckStyle= {checkVisibility : false}
-export default ({
+const TradeTable = ({
   data,
   header,
   handleRemove,
@@ -118,7 +123,8 @@ export default ({
   handleChange,
   stopEditing,
   handleDateChange,
-  handleDDChange
+  handleDDChange,
+  DDItems
 }) => (
   <Table>
     <TableHeader
@@ -148,9 +154,16 @@ export default ({
           handleChange,
           stopEditing,
           handleDateChange,
-          handleDDChange
+          handleDDChange,
+          DDItems
         )
       )}
     </TableBody>
   </Table>
 );
+
+TradeTable.propTypes = {
+  data: PropTypes.array.isRequired
+};
+
+export default TradeTable

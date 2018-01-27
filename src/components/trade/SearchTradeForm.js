@@ -1,9 +1,13 @@
-import React from "react";
+import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as tradeRefActions from '../../actions/tradeRefActions';
 import TextField from "material-ui/TextField";
 import RaisedButton from "material-ui/RaisedButton";
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import {sides, locations, counterparties, commodities} from './DropdownItems'
+import {sides, locations, counterparties, commodities
+  , commoditiesDD, counterpartiesDD, locationsDD, sidesDD} from './DropdownItems'
 import DatePicker from 'material-ui/DatePicker';
 
 const isDate = (data) => {
@@ -15,8 +19,6 @@ const serachFormStyle = {
 };
 const datePickerStyle = {fontSize:13, width:'100%'}
 const buttonContainerStyle = {boxShadow:0}
-//const priceStyle = {fontSize:13, width:'40%',  align: 'left', marginLeft:10}
-//const quantityStyle = {fontSize:13, width:'25%', align: 'left', marginLeft:10}
 const buttonStyle = {marginLeft:10, marginTop:'60%'}
 
 const selectFieldStyle = (fieldname) => {
@@ -31,7 +33,7 @@ const selectMenuItemStyle = (fieldname) => {
     {fontSize:13, width:'80%', textAlign: 'left', marginLeft:10}
 }
 
-export default class SearchTradeForm extends React.Component {
+class SearchTradeForm extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -140,7 +142,7 @@ export default class SearchTradeForm extends React.Component {
           menuItemStyle={selectMenuItemStyle("commodity")}
           onChange={this.handleCommodityChange}
         >
-          {commodities}
+          {commoditiesDD(this.props.commodities)}
         </SelectField>
         <br />
         <SelectField
@@ -154,7 +156,7 @@ export default class SearchTradeForm extends React.Component {
           menuItemStyle={selectMenuItemStyle("side")}
           onChange={this.handleSideChange}
         >
-          {sides}
+          {sidesDD(this.props.sides)}
         </SelectField>
         <br />
         <SelectField
@@ -168,7 +170,7 @@ export default class SearchTradeForm extends React.Component {
           menuItemStyle={selectMenuItemStyle("counterparty")}
           onChange={this.handleCounterpartyChange}
         >
-          {counterparties}
+          {counterpartiesDD(this.props.counterparties)}
         </SelectField>
         <SelectField
           name="location"
@@ -181,7 +183,7 @@ export default class SearchTradeForm extends React.Component {
           menuItemStyle={selectMenuItemStyle("location")}
           onChange={this.handleLocationChange}
         >
-          {locations}
+          {locationsDD(this.props.locations)}
         </SelectField>
         <br />
         <div style={buttonContainerStyle}>
@@ -199,3 +201,29 @@ export default class SearchTradeForm extends React.Component {
     );
   }
 }
+
+
+SearchTradeForm.propTypes = {
+  commodities: PropTypes.array.isRequired,
+  counterparties: PropTypes.array.isRequired,
+  locations: PropTypes.array.isRequired,
+  sides: PropTypes.array.isRequired
+};
+
+function mapStateToProps(state, ownProps) {
+  //console.log(state)
+  return {
+    commodities: state.commodities,
+    counterparties: state.counterparties,
+    locations: state.locations,
+    sides: state.sides
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(tradeRefActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchTradeForm);
