@@ -25,7 +25,9 @@ store.dispatch(loadTrades());
 
 render(
   <Provider store={store}>
-    <Router history={browserHistory} routes={routes}/>
+    <Router store={store} history={browserHistory} routes={routes}/>
   </Provider>,
   document.getElementById('app')
 );
+
+export default store;

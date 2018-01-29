@@ -100,8 +100,9 @@ class TradeApi {
           //console.log(trade.id)
           trades.push(trade);
         }
-        return trade;
-        //resolve(trade);
+        //return trade;
+        //console.log(trade)
+        resolve(trade);
       }, delay);
     });
   }

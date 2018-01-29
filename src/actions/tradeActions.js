@@ -19,10 +19,13 @@ export function deleteTradeComplete(trade) {
 }
 
 export function loadTrades() {
+  console.log('loadTade1:')
   return function(dispatch) {
     return tradeApi.getAllTrades().then(trades => {
+      console.log('loadTade:In')
       dispatch(loadTradeComplete(trades));
     }).catch(error => {
+      console.log('loadTade:err')
       throw(error);
     });
   };

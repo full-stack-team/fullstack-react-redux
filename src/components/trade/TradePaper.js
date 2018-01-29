@@ -47,6 +47,8 @@ const styles = {
 class TradePaper extends React.Component {
   constructor(props, context) {
     super(props, context);
+    //console.log(context)
+    //console.log('context:'+JSON.stringify(context))
     //console.log('cons:'+ JSON.stringify(this.props.trades))
     this.state = {
       trades: Object.assign([], this.props.trades),
@@ -55,30 +57,24 @@ class TradePaper extends React.Component {
       editIdx: -1
     };
 
-    //this.updateTrade = this.updateTrade.bind(this);
-    //this.saveTrade = this.saveTrade.bind(this);
-    //this.deleteTrade = this.deleteTrade.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
+    this.clearSearchFilter = this.clearSearchFilter.bind(this);
+    this.startEditing = this.startEditing.bind(this);
+    this.stopEditing = this.stopEditing.bind(this);
+    this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleDDChange = this.handleDDChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.searchFilter = this.searchFilter.bind(this);
   }
 
-  /*updateTrade(event) {
-    const field = event.target.name;
-    let trade = this.state.trade;
-    trade[field] = event.target.value;
-    return this.setState({trade: trade});
-  }
-
-  saveTrade(event) {
-    event.preventDefault();
-    this.props.actions.saveTrade(this.state.trade);
-    //this.context.router.push('./courses');
-  }
-
-  deleteTrade(event) {
-    event.preventDefault();
-    this.props.actions.deleteTrade(this.state.trade);
-    //this.context.router.push('./courses');
+  /*componentWillReceiveProps(nextProps) {
+    console.log('comp:'+JSON.stringify(nextProps.trades));
+    if (this.props.trades.length>0 && this.props.trades.length != nextProps.trades.length) {
+      // Necessary to populate form when existing course is loaded directly.
+      this.setState({trades: Object.assign([], nextProps.trades)});
+      console.log('compupd:'+JSON.stringify(this.state.trades))
+    }
   }*/
-
   handleRemove = i => {
     //console.log('handle remove:'+JSON.stringify(this.state.trades[i]))
     let deleteTrade = this.state.trades[i];//this.state.trades.filter((row, j) => j !== i);
@@ -280,16 +276,27 @@ class TradePaper extends React.Component {
         <Paper style={editPaperstyle} zDepth={2}>
           <CreateTradeForm
             onSubmit={createTrade => {
-              console.log('before'+JSON.stringify(createTrade))
-              this.props.actions.saveTrade(createTrade).then(createdDrade=>
-              {
-                console.log('trade created:'+createdDrade)
+              this.props.actions.saveTrade(createTrade)
+              
+              this.props.actions.loadTrades().then(()=>{
+                this.setState({
+                  trades: [...this.props.trades],
+                  backTrades:[...this.props.trades]
+                })
+                console.log(this.state.trades)
               })
               
-              this.setState({
-                trades: [...this.state.trades, createTrade],
-                backTrades:[...this.state.backTrades, createTrade]
-              })
+              //console.log(this.props.actions.loadTradeAction)
+              /*this.props.actions.loadTrades().then(
+                result=>{console.log(result)}
+              );*/
+              //console.log(this.props.actions.loadTrade)
+              /*this.props.dispatch({
+                type : "LOAD_TRADE"
+              });*/
+              //dispatch(tradeActions.loadTrades())
+              //console.log(this.state.trades)
+              //this.context.router.push('trade')
             }}
           />
         </Paper>
@@ -305,13 +312,15 @@ TradePaper.propTypes = {
   sides: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired
 };
+TradePaper.contextTypes = {
+  router: PropTypes.object
+};
 
 function returnData(data)
 {
   return data;
 }
 function mapStateToProps(state, ownProps) {
-  //console.log(state)
   //this.state.data = state.trades?state.trades:[];
   return {
     commodities: state.commodities,
@@ -323,7 +332,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  //console.log(bindActionCreators(tradeActionsCombined, dispatch));
+  console.log(bindActionCreators(tradeActionsCombined, dispatch));
   return {
     actions: bindActionCreators(tradeActionsCombined, dispatch)
   };
