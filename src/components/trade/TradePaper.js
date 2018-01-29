@@ -1,4 +1,6 @@
-import React, { PropTypes } from "react";
+//import React, { PropTypes } from "react";
+import React from "react";
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as tradeRefActions from '../../actions/tradeRefActions';
@@ -50,6 +52,7 @@ class TradePaper extends React.Component {
     //console.log(context)
     //console.log('context:'+JSON.stringify(context))
     //console.log('cons:'+ JSON.stringify(this.props.trades))
+    console.log('construct:'+JSON.stringify(this.props.trades))
     this.state = {
       trades: Object.assign([], this.props.trades),
       trade:{},
@@ -66,7 +69,16 @@ class TradePaper extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.searchFilter = this.searchFilter.bind(this);
   }
-
+  componentWillReceiveProps(nextProps) {
+    //console.log('willreceive:'+JSON.stringify(nextProps.trades))
+    if(this.props.trades.length ===0)
+    {
+      this.setState({
+        trades: [...nextProps.trades],
+        backTrades:[...nextProps.trades]
+      })
+    }
+  }
   /*componentWillReceiveProps(nextProps) {
     console.log('comp:'+JSON.stringify(nextProps.trades));
     if (this.props.trades.length>0 && this.props.trades.length != nextProps.trades.length) {
@@ -322,6 +334,8 @@ function returnData(data)
 }
 function mapStateToProps(state, ownProps) {
   //this.state.data = state.trades?state.trades:[];
+  //console.log('mapstateprop:'+JSON.stringify(state.trades))
+ 
   return {
     commodities: state.commodities,
     counterparties: state.counterparties,
@@ -332,7 +346,7 @@ function mapStateToProps(state, ownProps) {
 }
 
 function mapDispatchToProps(dispatch) {
-  console.log(bindActionCreators(tradeActionsCombined, dispatch));
+  //console.log(bindActionCreators(tradeActionsCombined, dispatch));
   return {
     actions: bindActionCreators(tradeActionsCombined, dispatch)
   };

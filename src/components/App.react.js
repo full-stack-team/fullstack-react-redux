@@ -1,5 +1,7 @@
 // This component handles the App template used on every page.
-import React, {PropTypes} from 'react';
+import React from 'react';//, {PropTypes}
+import PropTypes from 'prop-types';
+
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import '../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import Header from '../components/common/Header.react';

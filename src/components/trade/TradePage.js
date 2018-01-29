@@ -1,5 +1,6 @@
 // This component handles the App template used on every page.
-import React, {PropTypes} from 'react';
+import React from 'react';//, {PropTypes}
+import PropTypes from 'prop-types';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TradeTab from './TradeTab'
 

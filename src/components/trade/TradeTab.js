@@ -20,12 +20,12 @@ const TradeTab = () => (
 >
   <TradePaper />
 </Tab>
-<Tab label="TRANSFERS" disabled='true' >
+<Tab label="TRANSFERS" disabled={true} >
   <div>
   </div>
 </Tab>
 <Tab
-  label="TRANSPORTS" disabled='true'
+  label="TRANSPORTS" disabled={true}
 >
   <div>
     <h2 style={styles.headline}>Tab Three</h2>
