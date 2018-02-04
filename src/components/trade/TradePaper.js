@@ -1,8 +1,8 @@
 //import React, { PropTypes } from "react";
 import React from "react";
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as tradeRefActions from '../../actions/tradeRefActions';
 import * as tradeActions from '../../actions/tradeActions';
 
@@ -10,7 +10,7 @@ import Paper from 'material-ui/Paper';
 import TradeTable from './TradeTable';
 import CreateTradeForm from './CreateTradeForm'
 import SearchTradeForm from './SearchTradeForm'
-
+//import io from 'socket.io-client';
 import "../../styles/TradePaperApp.css";
 
 const tradeActionsCombined = Object.assign({}, tradeRefActions, tradeActions);
@@ -49,16 +49,30 @@ const styles = {
 class TradePaper extends React.Component {
   constructor(props, context) {
     super(props, context);
-    //console.log(context)
-    //console.log('context:'+JSON.stringify(context))
+    console.log('context:'+JSON.stringify(context.store))
     //console.log('cons:'+ JSON.stringify(this.props.trades))
-    console.log('construct:'+JSON.stringify(this.props.trades))
+    // this.dispatch = {};
+    //this.subscribe = {}
     this.state = {
       trades: Object.assign([], this.props.trades),
-      trade:{},
+      trade: {},
       backTrades: Object.assign([], this.props.trades),
       editIdx: -1
     };
+    
+    let unsubscribe = context.store.subscribe(() => {
+      //let localState = context.store;
+      //state is an Immutable.Map
+      let trades = context.store.getState().trades;
+      //console.log('subscribe trades:'+trades)
+      if(trades){
+        console.log('subscribtion in:'+JSON.stringify(trades))
+        this.setState({
+          trades: [...trades],
+          backTrades: [...trades]
+        })
+      }
+    });
 
     this.handleRemove = this.handleRemove.bind(this);
     this.clearSearchFilter = this.clearSearchFilter.bind(this);
@@ -68,17 +82,70 @@ class TradePaper extends React.Component {
     this.handleDDChange = this.handleDDChange.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.searchFilter = this.searchFilter.bind(this);
+    /*this.socket.on('chat message', function (trade) {
+      console.log('Received msg:' + JSON.stringify(trade))
+      console.log('func:'+this.receivedMsg())
+      //dispatch(tradeActions.createTradeComplete(trade))
+    })*/
+
   }
+  /*componentDidMount() {
+    this.subscribe = this.props.store;
+    //console.log('prop store:'+JSON.stringify(this.props))
+    this.unsubscribe = this.subscribe(this.handleChange.bind(this));
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  } 
+
+  handleChange() {
+    this.forceUpdate();
+    
+    //this.setState({
+    //  trades: [...nextProps.trades],
+    //  backTrades: [...nextProps.trades]
+    //})
+  }*/
+
+  /*
+  componentDidMount() {
+    console.log('component mount');
+    this.socket.on("chat message", trade => {
+      //console.log(JSON.stringify(trade).replace(/\\/g, ''))
+      let newTrade = JSON.stringify(trade);
+      let parseTrade = JSON.parse(newTrade.substring(1, newTrade.length - 1).replace(/\\/g, ''));
+      //delete parseTrade['__v'];//parseTrade.hasOwnProperty('__v')
+      this.setState({
+        trades: [...this.props.trades, parseTrade],
+        backTrades:[...this.props.trades, parseTrade]
+      })
+      let filled = [];
+      this.state.trades.forEach(function(value, i, array) {
+        console.log(value)
+        if (Object.getOwnPropertyNames(value).length > 0)  filled.push(value);
+      });
+      //filled = Object.assign([], this.props.trades, parseTrade)
+      this.setState({
+        trades: [...filled],
+        backTrades:[...filled]
+      })
+      //console.log(JSON.stringify(this.state.trades));
+    });
+  }*/
+  
   componentWillReceiveProps(nextProps) {
     //console.log('willreceive:'+JSON.stringify(nextProps.trades))
-    if(this.props.trades.length ===0)
-    {
+    if (this.props.trades.length === 0) {
+      // this.dispatch = this.props;
+      // console.log('dispatch'+JSON.stringify(this.dispatch));
       this.setState({
         trades: [...nextProps.trades],
-        backTrades:[...nextProps.trades]
+        backTrades: [...nextProps.trades]
       })
     }
   }
+
   /*componentWillReceiveProps(nextProps) {
     console.log('comp:'+JSON.stringify(nextProps.trades));
     if (this.props.trades.length>0 && this.props.trades.length != nextProps.trades.length) {
@@ -90,16 +157,17 @@ class TradePaper extends React.Component {
   handleRemove = i => {
     //console.log('handle remove:'+JSON.stringify(this.state.trades[i]))
     let deleteTrade = this.state.trades[i];//this.state.trades.filter((row, j) => j !== i);
+    console.log('delete trade paper+'+ JSON.stringify(deleteTrade))
     this.props.actions.deleteTrade(deleteTrade);
-    this.setState(state => ({
-      trades:this.state.trades.filter((row, j) => j !== i)
-    }));
+    /*this.setState(state => ({
+      trades: this.state.trades//.filter((row, j) => j !== i)
+    }));*/
   };
 
   clearSearchFilter = () => {
-    if(this.state.backTrades.length>0){
+    if (this.state.backTrades.length > 0) {
       this.setState(state => ({
-        trades:this.state.backTrades
+        trades: this.state.backTrades
       }))
     }
   }
@@ -108,73 +176,73 @@ class TradePaper extends React.Component {
     let isMatch = false;
     let isTradeFromDate = false;
 
-    if((filterCriteria == null || filterCriteria == undefined)) return;
+    if ((filterCriteria == null || filterCriteria == undefined)) return;
 
     let filteredData = this.state.trades.filter((row, j) => {
       isMatch = false;
-      isTradeFromDate=false;
+      isTradeFromDate = false;
 
-      filterCriteria.some((eachCondition,index,_arr)=>{ 
+      filterCriteria.some((eachCondition, index, _arr) => {
         console.log(eachCondition)
 
-        if(eachCondition.key == 'tradeDateFrom'){
-          if(eachCondition.value && row.tradeDate>=eachCondition.value){
+        if (eachCondition.key == 'tradeDateFrom') {
+          if (eachCondition.value && row.tradeDate >= eachCondition.value) {
             isMatch = true;
             isTradeFromDate = true;
           }
           else {
-            isMatch = false; 
+            isMatch = false;
             return true;//break
           }
         }
-        
-        if(eachCondition.key == 'tradeDateTo'){
-          if(eachCondition.value && row.tradeDate<=eachCondition.value){
-            isMatch = isTradeFromDate && !isMatch?false:true;
+
+        if (eachCondition.key == 'tradeDateTo') {
+          if (eachCondition.value && row.tradeDate <= eachCondition.value) {
+            isMatch = isTradeFromDate && !isMatch ? false : true;
           }
           else {
-            isMatch = false; 
+            isMatch = false;
             return true;//break
           }
         }
 
-        if(eachCondition.key == 'commodity'){
+        if (eachCondition.key == 'commodity') {
           //console.log('commodity')
           //console.log(row.commodity)
-          if(eachCondition.value && row.commodity==eachCondition.value){
+          if (eachCondition.value && row.commodity == eachCondition.value) {
             isMatch = true
           }
-          else{
+          else {
             isMatch = false
             return true;//break
           }
         }
 
-        if(eachCondition.key == 'side'){
-          if(eachCondition.value && row.side==eachCondition.value){
+        if (eachCondition.key == 'side') {
+          if (eachCondition.value && row.side == eachCondition.value) {
             isMatch = true
           }
-          else{
+          else {
             isMatch = false
             return true;//break
           }
         }
 
-        if(eachCondition.key == 'counterparty'){
-          if(eachCondition.value && row.counterparty==eachCondition.value){
+        if (eachCondition.key == 'counterparty') {
+          if (eachCondition.value && row.counterparty == eachCondition.value) {
             isMatch = true
           }
-          else{
+          else {
             isMatch = false
             return true;//break
           }
         }
 
-        if(eachCondition.key == 'location'){
-          if(isMatch = eachCondition.value && row.location==eachCondition.value){
+        if (eachCondition.key == 'location') {
+          if (isMatch = eachCondition.value && row.location == eachCondition.value) {
             isMatch = true
           }
-          else{
+          else {
             isMatch = false
             return true;//break
           }
@@ -184,7 +252,7 @@ class TradePaper extends React.Component {
     })
     console.log(filteredData);
     this.setState(state => ({
-      trades:filteredData
+      trades: filteredData
     }))
   };
 
@@ -198,6 +266,7 @@ class TradePaper extends React.Component {
   stopEditing = () => {
     //console.log(this.state.trades[this.state.editIdx])
     let saveTrade = this.state.trades[this.state.editIdx];
+    //console.log('edit save trade:'+JSON.stringify(saveTrade))
     this.setState({ trade: saveTrade });
     this.props.actions.saveTrade(saveTrade);
     //console.log(this.state.trade);
@@ -210,7 +279,7 @@ class TradePaper extends React.Component {
       )
     }));
   };
-  
+
   //(event, index, counterparty)
   handleDDChange = (event, index, value, name, i) => {
     this.setState(state => ({
@@ -233,12 +302,12 @@ class TradePaper extends React.Component {
     return (
       <div style={styles.root} className="TradePaperApp">
         <Paper style={serachPaperstyle} zDepth={2}>
-        <SearchTradeForm
-          clearSearchFilter={this.clearSearchFilter}
-          searchFilter={this.searchFilter}
-        />
+          <SearchTradeForm
+            clearSearchFilter={this.clearSearchFilter}
+            searchFilter={this.searchFilter}
+          />
         </Paper>
-        <Paper style={tablePaperstyle} zDepth={2} > 
+        <Paper style={tablePaperstyle} zDepth={2} >
           <TradeTable
             handleRemove={this.handleRemove}
             startEditing={this.startEditing}
@@ -248,10 +317,11 @@ class TradePaper extends React.Component {
             handleDateChange={this.handleDateChange}
             handleDDChange={this.handleDDChange}
             data={this.state.trades}//this.state.trades//this.props.trades
-            DDItems={{commodities:this.props.commodities,
-              counterparties:this.props.counterparties,
-              locations:this.props.locations,
-              sides:this.props.sides
+            DDItems={{
+              commodities: this.props.commodities,
+              counterparties: this.props.counterparties,
+              locations: this.props.locations,
+              sides: this.props.sides
             }}
             header={[
               {
@@ -289,26 +359,15 @@ class TradePaper extends React.Component {
           <CreateTradeForm
             onSubmit={createTrade => {
               this.props.actions.saveTrade(createTrade)
-              
-              this.props.actions.loadTrades().then(()=>{
+
+              /*this.props.actions.loadTrades().then(()=>{
                 this.setState({
                   trades: [...this.props.trades],
                   backTrades:[...this.props.trades]
                 })
                 console.log(this.state.trades)
-              })
-              
-              //console.log(this.props.actions.loadTradeAction)
-              /*this.props.actions.loadTrades().then(
-                result=>{console.log(result)}
-              );*/
-              //console.log(this.props.actions.loadTrade)
-              /*this.props.dispatch({
-                type : "LOAD_TRADE"
-              });*/
-              //dispatch(tradeActions.loadTrades())
-              //console.log(this.state.trades)
-              //this.context.router.push('trade')
+              })*/
+
             }}
           />
         </Paper>
@@ -325,17 +384,17 @@ TradePaper.propTypes = {
   actions: PropTypes.object.isRequired
 };
 TradePaper.contextTypes = {
-  router: PropTypes.object
+  router: PropTypes.object,
+  store: PropTypes.object
 };
 
-function returnData(data)
-{
+function returnData(data) {
   return data;
 }
 function mapStateToProps(state, ownProps) {
   //this.state.data = state.trades?state.trades:[];
   //console.log('mapstateprop:'+JSON.stringify(state.trades))
- 
+
   return {
     commodities: state.commodities,
     counterparties: state.counterparties,

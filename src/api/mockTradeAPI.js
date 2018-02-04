@@ -1,4 +1,12 @@
+
 import delay from './delay';
+import axios from 'axios';
+
+axios.defaults.baseURL = 'http://localhost:4000';
+//axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.post['Accept'] = 'application/json';
+axios.defaults.headers.post['ID'] = '1';
 
 /*Date.prototype.yyyymmdd = function() {
   var mm = this.getMonth() + 1; // getMonth() is zero-based
@@ -15,7 +23,7 @@ import delay from './delay';
 // All calls return promises.
 const trades = [
   {
-    id: 1,
+    _id: 1,
     tradeDate:new Date('2017-12-01'),
     commodity: 'SLR',
     side: 'Buy',
@@ -25,7 +33,7 @@ const trades = [
     location: 'LON'
   },
   {
-    id: 2,
+    _id: 2,
     tradeDate:new Date('2017-12-31'),
     commodity: 'SLR',
     side: 'Buy',
@@ -35,7 +43,7 @@ const trades = [
     location: 'LON'
   },
   {
-    id: 3,
+    _id: 3,
     tradeDate:new Date('2017-12-05'),
     commodity: 'GLD',
     side: 'Buy',
@@ -45,7 +53,7 @@ const trades = [
     location: 'NYC'
   },  
   {
-    id: 4,
+    _id: 4,
     tradeDate:new Date('2017-12-15'),
     commodity: 'GLD',
     side: 'Buy',
@@ -57,10 +65,11 @@ const trades = [
 ];
 
 //This would be performed on the server in a real app. Just stubbing in.
-const generateId = () => {
+//not require
+/*const generateId = () => {
   //console.log(Math.max.apply(Math,trades.map(function(trade){return trade.id +1;})))
-  return Math.max.apply(Math,trades.map(function(trade){return trade.id +1;}));//return trades.id
-};
+  return Math.max.apply(Math,trades.map(function(trade){return trade._id +1;}));//return trades.id
+};*/
 
 class TradeApi {
   static getAllTrades() {
@@ -76,10 +85,36 @@ class TradeApi {
     });
   }
 
-  static getTempTrades() {return trades;}
+  static getTempTrades() {
+    return trades;
+  }
 
   static saveTrade(trade) {
-    //console.log(trade);
+    //console.log('savetrade:'+JSON.stringify(trade))
+    return axios({
+      method: 'post',
+      url: '/api/createTrade',
+      data: trade
+    });
+  }
+  static updateTrade(trade) {
+    //console.log('savetrade:'+JSON.stringify(trade))
+    return axios({
+      method: 'put',
+      url: '/api/updateTrade',
+      data: trade
+    });
+  }
+  static deleteTrade(trade) {
+    //console.log('savetrade:'+JSON.stringify(trade))
+    return axios({
+      method: 'delete',
+      url: '/api/deleteTrade',
+      data: trade
+    });
+  }
+  //save trade with mock data
+    /*//console.log(trade);
 	  trade = Object.assign({}, trade); // to avoid manipulating object passed in.
     return new Promise((resolve, reject) => {
       setTimeout(() => {
@@ -89,14 +124,14 @@ class TradeApi {
           reject(`Qty must be at least ${minQty}.`);
         }
 
-        if (trade.id) {
-          const existingTradeIndex = trades.findIndex(a => a.id == trade.id);
+        if (trade._id) {
+          const existingTradeIndex = trades.findIndex(a => a._id == trade._id);
           trades.splice(existingTradeIndex, 1, trade);
         } else {
           //Just simulating creation here.
           //The server would generate ids for new trades in a real app.
           //Cloning so copy returned is passed by value rather than by reference.
-          trade.id = generateId();
+          trade._id = generateId();
           //console.log(trade.id)
           trades.push(trade);
         }
@@ -104,24 +139,27 @@ class TradeApi {
         //console.log(trade)
         resolve(trade);
       }, delay);
-    });
-  }
+      });
+    }
+      */
+    
+  
 
-  static deleteTrade(tradeToDelete) {
+  /*static deleteTrade(tradeToDelete) {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         //console.log(trades)
         const indexOfTradeToDelete = trades.findIndex(trade => {
           //console.log(JSON.stringify(trade.id == tradeToDelete.id))
-          return trade.id == tradeToDelete.id;
+          return trade._id == tradeToDelete._id;
         });
         //console.log(indexOfTradeToDelete)
         trades.splice(indexOfTradeToDelete, 1);
-        //console.log('trades after delete:'+JSON.stringify(trades))
+        console.log('trades after delete:'+JSON.stringify(trades))
         resolve();
       }, delay);
     });
-  }
+  }*/
 }
 
 export default TradeApi;

@@ -1,7 +1,8 @@
 export const LOAD_TRADE = 'LOAD_TRADE';
 export const CREATE_TRADE = 'CREATE_TRADE';
-export const UPDATE_TRADE = 'UPDATE_COURSE';
-export const DELETE_TRADE = 'UPDATE_COURSE';
+export const RECEIVED_TRADE = 'RECEIVED_TRADE';
+export const UPDATE_TRADE = 'UPDATE_TRADE';
+export const DELETE_TRADE = 'DELETE_TRADE';
 export const LOAD_COMMODITY = 'LOAD_COMMODITY';
 export const LOAD_COUNTERPARTY = 'LOAD_COUNTERPARTY';
 export const LOAD_LOCATION = 'LOAD_LOCATION';
