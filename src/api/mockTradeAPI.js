@@ -73,16 +73,20 @@ const trades = [
 
 class TradeApi {
   static getAllTrades() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
+    //return new Promise((resolve, reject) => {
+      //setTimeout(() => {
         /*trades.forEach(function(trade) {
           console.log('before:'+trade.tradeDate);
           trade['tradeDate']=trade['tradeDate'].yyyymmdd();
           console.log('later:'+trade.tradeDate);
         });*/
-        resolve(Object.assign([], trades));
-      }, delay);
-    });
+        return axios({
+          method: 'get',
+          url: '/api/getAllTrade'
+        });
+        //resolve(Object.assign([], trades));
+      //}, delay);
+    //});
   }
 
   static getTempTrades() {

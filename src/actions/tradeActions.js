@@ -3,6 +3,16 @@ import * as types from './tradeActionTypes';
 import tradeApi from '../api/mockTradeAPI';
 import io from 'socket.io-client';
 
+/*Date.prototype.yyyymmdd = function() {
+  var mm = this.getMonth() + 1; // getMonth() is zero-based
+  var dd = this.getDate();
+
+  return [this.getFullYear(),
+          (mm>9 ? '' : '0') + mm,
+          (dd>9 ? '' : '0') + dd
+         ].join('-');
+};
+*/
 let dispatchTrade = {};
 let socket = io('http://localhost:3000');
 
@@ -50,7 +60,14 @@ export function loadTrades() {
   return function(dispatch) {
     return tradeApi.getAllTrades().then(trades => {
       console.log('loadTade:In')
-      dispatch(loadTradeComplete(trades));
+      
+      trades.data.forEach(function(trade) {
+        console.log('before:'+trade.tradeDate);
+        trade['tradeDate']=new Date(trade['tradeDate']);//.yyyymmdd();
+        console.log('later:'+trade.tradeDate);
+      })
+
+      dispatch(loadTradeComplete(trades.data));
     }).catch(error => {
       console.log('loadTade:err')
       throw(error);
@@ -97,7 +114,7 @@ export function receivedTrade(trade) {
 
 export function deleteTrade(trade) {
   return function(dispatch) {
-    //dispatchTrade = dispatch;
+    dispatchTrade = dispatch;
     console.log('delete trade action:'+JSON.stringify(trade))
     return tradeApi.deleteTrade(trade).then((deleteTrade) => {
       console.log('delete trade received:'+deleteTrade)
@@ -107,3 +124,4 @@ export function deleteTrade(trade) {
     });
   };
 }
+

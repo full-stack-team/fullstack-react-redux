@@ -4,7 +4,10 @@ import initialState from './initialState';
 export default function tradeReducer(state = initialState.trades, action) {
   //switch (action.type) {
     if(action.type===types.LOAD_TRADE)
-      {return action.trades}
+      {
+        console.log('LOAD_TRADE')
+        return action.trades
+      }
     else if(action.type===types.CREATE_TRADE)
       {return  [//...state//,Object.assign({}, action.trades)
         ...state,
