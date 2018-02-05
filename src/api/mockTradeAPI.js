@@ -117,6 +117,32 @@ class TradeApi {
       data: trade
     });
   }
+
+  static getRefCommodity(){
+    axios({
+      method: 'get',
+      url: '/api/refdata'
+    }).then(data=>{
+      return data.commodity.map(item => item.code);
+    })
+  }
+  static getRefLocation(){
+    axios({
+      method: 'get',
+      url: '/api/refdata'
+    }).then(data=>{
+      return data.location.map(item => item.code);
+    })
+  }
+  static getRefCounterparty(){
+    axios({
+      method: 'get',
+      url: '/api/refdata'
+    }).then(data=>{
+      return data.counterparty.map(item => item.code);
+    })
+  }
+*/
   //save trade with mock data
     /*//console.log(trade);
 	  trade = Object.assign({}, trade); // to avoid manipulating object passed in.

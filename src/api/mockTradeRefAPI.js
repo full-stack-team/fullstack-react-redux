@@ -1,5 +1,11 @@
 import delay from './delay';
-//import React from "react";
+import axios from 'axios';
+
+axios.defaults.baseURL = 'http://localhost:4000';
+//axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
+axios.defaults.headers.post['Content-Type'] = 'application/json';
+axios.defaults.headers.post['Accept'] = 'application/json';
+axios.defaults.headers.post['ID'] = '1';
 
 const sidesItem = ['Buy', 'Sell'];
 const locationsItem = ['LON', 'NYC'];
@@ -11,27 +17,45 @@ export {sidesItem, locationsItem, counterpartiesItem, commoditiesItem};
 class TradeRefApi {
   
   static getAllCommodities() {
-    return new Promise((resolve, reject) => {
+    return axios({
+      method: 'get',
+      url: '/api/refdata'
+    })/*.then(data=>{
+      return data.commodity.map(item => item.code);
+    })*/
+    /*return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(Object.assign([], commoditiesItem));
       }, delay);
-    });
+    });*/
   }
 
   static getAllCounterparties() {
-    return new Promise((resolve, reject) => {
+    return axios({
+      method: 'get',
+      url: '/api/refdata'
+    })/*.then(data=>{
+      return data.counterparty.map(item => item.code);
+    })*/
+    /*return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(Object.assign([], counterpartiesItem));
       }, delay);
-    });
+    });*/
   }
 
   static getAllLocations() {
-    return new Promise((resolve, reject) => {
+    return axios({
+      method: 'get',
+      url: '/api/refdata'
+    })/*.then(data=>{
+      return data.location.map(item => item.code);
+    })*/
+    /*return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve(Object.assign([], locationsItem));
       }, delay);
-    });
+    });*/
   }
 
   static getSides() {

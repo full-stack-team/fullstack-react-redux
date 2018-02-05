@@ -16,8 +16,13 @@ export function loadSidesComplete(sides) {
 
 export function loadCommodities() {
 return function(dispatch) {
-    return tradeRefApi.getAllCommodities().then(commodities => {
-    dispatch(loadCommoditiesComplete(commodities));
+    return tradeRefApi.getAllCommodities().then(data => {
+        //console.log(data.data[0].commodity)
+        let commodities =data.data[0].commodity.map(function(item) {
+            return (item.code);
+        });
+        //console.log(commodities)
+        dispatch(loadCommoditiesComplete(commodities));
     }).catch(error => {
     throw(error);
     });
@@ -26,8 +31,11 @@ return function(dispatch) {
 
 export function loadCounterparties() {
 return function(dispatch) {
-    return tradeRefApi.getAllCounterparties().then(counterparties => {
-    dispatch(loadCounterpartiesComplete(counterparties));
+    return tradeRefApi.getAllCounterparties().then(data => {
+        let counterparties= data.data[0].counterparty.map(function(item) {
+            return (item.code);
+        });
+        dispatch(loadCounterpartiesComplete(counterparties));
     }).catch(error => {
     throw(error);
     });
@@ -36,8 +44,11 @@ return function(dispatch) {
 
 export function loadLocations() {
 return function(dispatch) {
-    return tradeRefApi.getAllLocations().then(locations => {
-    dispatch(loadLocationsComplete(locations));
+    return tradeRefApi.getAllLocations().then(data => {
+        let locations = data.data[0].location.map(function(item) {
+            return (item.code);
+        });
+        dispatch(loadLocationsComplete(locations));
     }).catch(error => {
     throw(error);
     });
